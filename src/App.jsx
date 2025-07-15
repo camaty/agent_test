@@ -1,5 +1,6 @@
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
+import { EffectComposer, SSAO } from '@react-three/postprocessing'
 import { useState } from 'react'
 import './App.css'
 
@@ -54,13 +55,21 @@ function ComplexScene() {
   )
 }
 
-function Scene({ lightColor, lightPosition }) {
+function Scene({ lightColor, lightPosition, ssaoConfig }) {
   return (
     <>
       <directionalLight position={lightPosition} color={lightColor} intensity={1} />
       <ambientLight intensity={0.2} />
       <ComplexScene />
       <OrbitControls />
+      <EffectComposer>
+        <SSAO 
+          intensity={ssaoConfig.intensity}
+          radius={ssaoConfig.radius}
+          bias={ssaoConfig.bias}
+          samples={ssaoConfig.samples}
+        />
+      </EffectComposer>
     </>
   )
 }
@@ -68,6 +77,12 @@ function Scene({ lightColor, lightPosition }) {
 function App() {
   const [lightColor, setLightColor] = useState('#ffffff')
   const [lightPosition, setLightPosition] = useState([10, 10, 10])
+  const [ssaoConfig, setSsaoConfig] = useState({
+    intensity: 0.5,
+    radius: 0.1,
+    bias: 0.025,
+    samples: 16
+  })
 
   const handlePositionChange = (axis, value) => {
     const newPosition = [...lightPosition]
@@ -76,10 +91,17 @@ function App() {
     setLightPosition(newPosition)
   }
 
+  const handleSSAOChange = (parameter, value) => {
+    setSsaoConfig(prev => ({
+      ...prev,
+      [parameter]: parseFloat(value)
+    }))
+  }
+
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <Canvas>
-        <Scene lightColor={lightColor} lightPosition={lightPosition} />
+        <Scene lightColor={lightColor} lightPosition={lightPosition} ssaoConfig={ssaoConfig} />
       </Canvas>
       
       <div className="controls">
@@ -130,6 +152,60 @@ function App() {
                 onChange={(e) => handlePositionChange('z', e.target.value)}
               />
               <span>{lightPosition[2].toFixed(1)}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div className="control-group">
+          <label>SSAO Settings:</label>
+          <div className="position-controls">
+            <div className="axis-control">
+              <label>Intensity:</label>
+              <input
+                type="range"
+                min="0"
+                max="2"
+                step="0.01"
+                value={ssaoConfig.intensity}
+                onChange={(e) => handleSSAOChange('intensity', e.target.value)}
+              />
+              <span>{ssaoConfig.intensity.toFixed(2)}</span>
+            </div>
+            <div className="axis-control">
+              <label>Radius:</label>
+              <input
+                type="range"
+                min="0.01"
+                max="0.5"
+                step="0.01"
+                value={ssaoConfig.radius}
+                onChange={(e) => handleSSAOChange('radius', e.target.value)}
+              />
+              <span>{ssaoConfig.radius.toFixed(2)}</span>
+            </div>
+            <div className="axis-control">
+              <label>Bias:</label>
+              <input
+                type="range"
+                min="0.001"
+                max="0.1"
+                step="0.001"
+                value={ssaoConfig.bias}
+                onChange={(e) => handleSSAOChange('bias', e.target.value)}
+              />
+              <span>{ssaoConfig.bias.toFixed(3)}</span>
+            </div>
+            <div className="axis-control">
+              <label>Samples:</label>
+              <input
+                type="range"
+                min="4"
+                max="32"
+                step="1"
+                value={ssaoConfig.samples}
+                onChange={(e) => handleSSAOChange('samples', e.target.value)}
+              />
+              <span>{ssaoConfig.samples}</span>
             </div>
           </div>
         </div>
