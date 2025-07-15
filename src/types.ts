@@ -63,3 +63,27 @@ export interface ParticleControlsProps {
 }
 
 export type ParticleParameter = keyof ParticleConfig
+
+// Animation System Types
+export interface AnimationState {
+  isPlaying: boolean
+  isReversed: boolean
+  currentTime: number
+  duration: number
+  loop: boolean
+}
+
+export interface AnimationControlsProps {
+  animationState: AnimationState
+  onPlay: () => void
+  onPause: () => void
+  onStop: () => void
+  onReverse: () => void
+  onRestart: () => void
+  onTimeChange: (time: number) => void
+}
+
+export interface AnimatedCharacterProps {
+  animationState: AnimationState
+  onAnimationUpdate: (currentTime: number, duration: number) => void
+}

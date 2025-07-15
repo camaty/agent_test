@@ -1,12 +1,12 @@
 import { FC, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Vector3 } from 'three'
-import { Scene, Controls, ParticleControls } from './components'
-import { SSAOConfig, ParticleConfig } from './types'
+import { Scene, Controls, ParticleControls, TimelineControls } from './components'
+import { SSAOConfig, ParticleConfig, AnimationState } from './types'
 import './App.css'
 
 /**
- * Main application component featuring a 3D scene with lighting, SSAO, and particle system controls
+ * Main application component featuring a 3D scene with lighting, SSAO, particle system, and animation controls
  */
 const App: FC = () => {
   const [lightColor, setLightColor] = useState<string>('#ffffff')
@@ -36,6 +36,13 @@ const App: FC = () => {
     fadeOut: 0.3,
     turbulence: 2
   })
+  const [animationState, setAnimationState] = useState<AnimationState>({
+    isPlaying: true,
+    isReversed: false,
+    currentTime: 0,
+    duration: 4,
+    loop: true
+  })
 
   const handleLightColorChange = (color: string) => {
     setLightColor(color)
@@ -53,16 +60,65 @@ const App: FC = () => {
     setParticleConfig(config)
   }
 
+  const handleAnimationUpdate = (currentTime: number, duration: number) => {
+    setAnimationState(prev => ({
+      ...prev,
+      currentTime,
+      duration
+    }))
+  }
+
+  const handlePlay = () => {
+    setAnimationState(prev => ({ ...prev, isPlaying: true }))
+  }
+
+  const handlePause = () => {
+    setAnimationState(prev => ({ ...prev, isPlaying: false }))
+  }
+
+  const handleStop = () => {
+    setAnimationState(prev => ({ 
+      ...prev, 
+      isPlaying: false, 
+      currentTime: 0,
+      isReversed: false 
+    }))
+  }
+
+  const handleReverse = () => {
+    setAnimationState(prev => ({ 
+      ...prev, 
+      isReversed: !prev.isReversed 
+    }))
+  }
+
+  const handleRestart = () => {
+    setAnimationState(prev => ({ 
+      ...prev, 
+      currentTime: 0,
+      isPlaying: true,
+      isReversed: false 
+    }))
+  }
+
+  const handleTimeChange = (time: number) => {
+    setAnimationState(prev => ({ ...prev, currentTime: time }))
+  }
+
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
-      <Canvas>
-        <Scene 
-          lightColor={lightColor} 
-          lightPosition={lightPosition} 
-          ssaoConfig={ssaoConfig}
-          particleConfig={particleConfig}
-        />
-      </Canvas>
+    <div className="app-container">
+      <div className="scene-container">
+        <Canvas>
+          <Scene 
+            lightColor={lightColor} 
+            lightPosition={lightPosition} 
+            ssaoConfig={ssaoConfig}
+            particleConfig={particleConfig}
+            animationState={animationState}
+            onAnimationUpdate={handleAnimationUpdate}
+          />
+        </Canvas>
+      </div>
       
       <Controls
         lightColor={lightColor}
@@ -76,6 +132,16 @@ const App: FC = () => {
       <ParticleControls
         config={particleConfig}
         onConfigChange={handleParticleConfigChange}
+      />
+      
+      <TimelineControls
+        animationState={animationState}
+        onPlay={handlePlay}
+        onPause={handlePause}
+        onStop={handleStop}
+        onReverse={handleReverse}
+        onRestart={handleRestart}
+        onTimeChange={handleTimeChange}
       />
     </div>
   )
