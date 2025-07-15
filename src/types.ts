@@ -24,3 +24,42 @@ export interface ControlsProps {
 
 export type Axis = 'x' | 'y' | 'z'
 export type SSAOParameter = keyof SSAOConfig
+
+// Particle System Types
+export interface ParticleConfig {
+  // Emitter properties
+  maxParticles: number
+  emissionRate: number
+  burstCount: number
+  emitterPosition: Vector3
+  emitterRadius: number
+  
+  // Particle properties
+  particleLifetime: number
+  startSpeed: number
+  startSize: number
+  endSize: number
+  startColor: string
+  endColor: string
+  
+  // Physics
+  gravity: number
+  wind: Vector3
+  drag: number
+  
+  // Behavior
+  fadeIn: number
+  fadeOut: number
+  turbulence: number
+}
+
+export interface ParticleSystemProps {
+  config: ParticleConfig
+}
+
+export interface ParticleControlsProps {
+  config: ParticleConfig
+  onConfigChange: (config: ParticleConfig) => void
+}
+
+export type ParticleParameter = keyof ParticleConfig
