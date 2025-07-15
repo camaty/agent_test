@@ -1,12 +1,82 @@
-# React + Vite
+# React Three Fiber SSAO Demo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React Three Fiber application demonstrating Screen Space Ambient Occlusion (SSAO) effects with TypeScript.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **TypeScript**: Full TypeScript implementation with proper type safety
+- **React Three Fiber**: Modern React approach to Three.js
+- **SSAO Post-processing**: Real-time ambient occlusion effects
+- **Interactive Controls**: Adjust lighting and SSAO parameters
+- **Modular Architecture**: Well-structured component organization
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **React 19** - Modern React with hooks
+- **TypeScript** - Type-safe development
+- **Three.js** - 3D graphics library
+- **React Three Fiber** - React renderer for Three.js
+- **React Three Drei** - Useful helpers for React Three Fiber
+- **React Three Postprocessing** - Post-processing effects
+- **Vite** - Fast development server and build tool
+- **ESLint** - Code linting with TypeScript support
+
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── ComplexScene.tsx    # 3D scene geometry
+│   ├── Controls.tsx        # UI controls for parameters
+│   ├── Scene.tsx          # Main scene with lighting
+│   └── index.ts           # Component exports
+├── types.ts               # TypeScript type definitions
+├── App.tsx                # Main application component
+└── main.tsx              # Application entry point
+```
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Run linting
+npm run lint
+
+# Type checking
+npx tsc --noEmit
+```
+
+## Architecture
+
+The application is built with a modular TypeScript architecture:
+
+- **Type Safety**: All components use proper TypeScript interfaces
+- **Component Separation**: Clear separation of concerns between 3D scene, controls, and app logic
+- **Error Handling**: Proper null checking and error boundaries
+- **Performance**: Optimized rendering with React Three Fiber
+
+## Features
+
+- Real-time SSAO post-processing effects
+- Interactive lighting controls
+- Complex 3D geometries for testing occlusion
+- Responsive UI controls
+- TypeScript type safety throughout
+
+## TypeScript Migration
+
+This project has been fully converted from JavaScript to TypeScript with:
+
+- Proper type definitions for all components
+- Three.js type safety
+- React event handling with types
+- Modular component architecture
+- Comprehensive error handling
