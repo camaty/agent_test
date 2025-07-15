@@ -254,14 +254,26 @@ body,
   border-color: #357abd;
 }
 
-.timeline-button.play-pause {
+.timeline-button.play, .timeline-button.pause {
   background: #4a90e2;
   border-color: #357abd;
   min-width: 40px;
 }
 
-.timeline-button.play-pause:hover {
+.timeline-button.play:hover, .timeline-button.pause:hover {
   background: #357abd;
+}
+
+.timeline-button.play:disabled, .timeline-button.pause:disabled {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.3);
+  cursor: not-allowed;
+}
+
+.timeline-button.play:disabled:hover, .timeline-button.pause:disabled:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .timeline-status {

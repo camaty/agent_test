@@ -73,11 +73,21 @@ export const TimelineControls: FC<AnimationControlsProps> = ({
         </button>
         
         <button 
-          onClick={animationState.isPlaying ? onPause : onPlay}
-          className="timeline-button play-pause"
-          title={animationState.isPlaying ? 'Pause' : 'Play'}
+          onClick={onPlay}
+          className="timeline-button play"
+          title="Play"
+          disabled={animationState.isPlaying}
         >
-          {animationState.isPlaying ? '⏸️' : '▶️'}
+          ▶️
+        </button>
+        
+        <button 
+          onClick={onPause}
+          className="timeline-button pause"
+          title="Pause"
+          disabled={!animationState.isPlaying}
+        >
+          ⏸️
         </button>
         
         <button 
