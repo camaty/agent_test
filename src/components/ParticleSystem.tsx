@@ -1,6 +1,6 @@
 import { FC, useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Points, BufferGeometry, BufferAttribute, Color, Vector3 } from 'three'
+import { Points, BufferGeometry, BufferAttribute, Color, Vector3, CanvasTexture, AdditiveBlending } from 'three'
 import { ParticleSystemProps } from '../types'
 
 interface Particle {
@@ -14,6 +14,37 @@ interface Particle {
 }
 
 /**
+ * Create a circular texture for particles
+ */
+const createCircularTexture = (): CanvasTexture => {
+  const canvas = document.createElement('canvas')
+  const size = 64
+  canvas.width = size
+  canvas.height = size
+  
+  const context = canvas.getContext('2d')!
+  const centerX = size / 2
+  const centerY = size / 2
+  const radius = size / 2
+  
+  // Create radial gradient for smooth circular particle
+  const gradient = context.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius)
+  gradient.addColorStop(0, 'rgba(255, 255, 255, 1)')
+  gradient.addColorStop(0.2, 'rgba(255, 255, 255, 1)')
+  gradient.addColorStop(0.4, 'rgba(255, 255, 255, 0.8)')
+  gradient.addColorStop(0.7, 'rgba(255, 255, 255, 0.4)')
+  gradient.addColorStop(1, 'rgba(255, 255, 255, 0)')
+  
+  context.fillStyle = gradient
+  context.fillRect(0, 0, size, size)
+  
+  const texture = new CanvasTexture(canvas)
+  texture.needsUpdate = true
+  
+  return texture
+}
+
+/**
  * Niagara-style particle system component
  */
 export const ParticleSystem: FC<ParticleSystemProps> = ({ config }) => {
@@ -21,6 +52,9 @@ export const ParticleSystem: FC<ParticleSystemProps> = ({ config }) => {
   const particlesRef = useRef<Particle[]>([])
   const timeRef = useRef(0)
   const emissionTimeRef = useRef(0)
+
+  // Create circular texture for particles
+  const particleTexture = useMemo(() => createCircularTexture(), [])
 
   // Initialize particles array
   useMemo(() => {
@@ -186,12 +220,15 @@ export const ParticleSystem: FC<ParticleSystemProps> = ({ config }) => {
         />
       </bufferGeometry>
       <pointsMaterial
+        map={particleTexture}
         size={1}
         sizeAttenuation={true}
         vertexColors={true}
         transparent={true}
-        opacity={0.8}
-        blending={2} // AdditiveBlending
+        opacity={1}
+        blending={AdditiveBlending}
+        depthWrite={false}
+        alphaTest={0.001}
       />
     </points>
   )
