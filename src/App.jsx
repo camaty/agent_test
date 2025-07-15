@@ -15,7 +15,6 @@ function Box() {
 function Scene({ lightColor, lightPosition }) {
   return (
     <>
-      <ambientLight intensity={0.5} />
       <directionalLight position={lightPosition} color={lightColor} />
       <Box />
       <OrbitControls />
