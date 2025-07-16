@@ -120,19 +120,21 @@ const App: FC = () => {
         </Canvas>
       </div>
       
-      <Controls
-        lightColor={lightColor}
-        lightPosition={lightPosition}
-        ssaoConfig={ssaoConfig}
-        onLightColorChange={handleLightColorChange}
-        onLightPositionChange={handleLightPositionChange}
-        onSSAOChange={handleSSAOChange}
-      />
-      
-      <ParticleControls
-        config={particleConfig}
-        onConfigChange={handleParticleConfigChange}
-      />
+      <div className="controls-container">
+        <Controls
+          lightColor={lightColor}
+          lightPosition={lightPosition}
+          ssaoConfig={ssaoConfig}
+          onLightColorChange={handleLightColorChange}
+          onLightPositionChange={handleLightPositionChange}
+          onSSAOChange={handleSSAOChange}
+        />
+        
+        <ParticleControls
+          config={particleConfig}
+          onConfigChange={handleParticleConfigChange}
+        />
+      </div>
       
       <TimelineControls
         animationState={animationState}
