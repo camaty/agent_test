@@ -1,12 +1,12 @@
 import { FC, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Vector3 } from 'three'
-import { Scene, Controls, ParticleControls, TimelineControls } from './components'
-import { SSAOConfig, ParticleConfig, AnimationState } from './types'
+import { Scene, Controls, ParticleControls, TimelineControls, SkinShaderControls } from './components'
+import { SSAOConfig, ParticleConfig, AnimationState, SkinShaderConfig } from './types'
 import './App.css'
 
 /**
- * Main application component featuring a 3D scene with lighting, SSAO, particle system, and animation controls
+ * Main application component featuring a 3D scene with lighting, SSAO, particle system, animation controls, and skin shader
  */
 const App: FC = () => {
   const [lightColor, setLightColor] = useState<string>('#ffffff')
@@ -43,6 +43,14 @@ const App: FC = () => {
     duration: 4,
     loop: true
   })
+  const [skinShaderConfig, setSkinShaderConfig] = useState<SkinShaderConfig>({
+    renderMode: 'skin',
+    skinColor: '#ffdbcc',
+    subsurfaceScattering: 0.3,
+    roughness: 0.4,
+    metalness: 0.1,
+    position: new Vector3(-4, 0, 0)
+  })
 
   const handleLightColorChange = (color: string) => {
     setLightColor(color)
@@ -58,6 +66,10 @@ const App: FC = () => {
 
   const handleParticleConfigChange = (config: ParticleConfig) => {
     setParticleConfig(config)
+  }
+
+  const handleSkinShaderConfigChange = (config: SkinShaderConfig) => {
+    setSkinShaderConfig(config)
   }
 
   const handleAnimationUpdate = (currentTime: number, duration: number) => {
@@ -115,6 +127,7 @@ const App: FC = () => {
             ssaoConfig={ssaoConfig}
             particleConfig={particleConfig}
             animationState={animationState}
+            skinShaderConfig={skinShaderConfig}
             onAnimationUpdate={handleAnimationUpdate}
           />
         </Canvas>
@@ -132,6 +145,11 @@ const App: FC = () => {
       <ParticleControls
         config={particleConfig}
         onConfigChange={handleParticleConfigChange}
+      />
+      
+      <SkinShaderControls
+        config={skinShaderConfig}
+        onConfigChange={handleSkinShaderConfigChange}
       />
       
       <TimelineControls

@@ -87,3 +87,20 @@ export interface AnimatedCharacterProps {
   animationState: AnimationState
   onAnimationUpdate: (currentTime: number, duration: number) => void
 }
+
+// Skin Shader Types
+export type RenderMode = 'depth' | 'normal' | 'skin' | 'combined'
+
+export interface SkinShaderConfig {
+  renderMode: RenderMode
+  skinColor: string
+  subsurfaceScattering: number
+  roughness: number
+  metalness: number
+  position: Vector3
+}
+
+export interface SkinShaderControlsProps {
+  config: SkinShaderConfig
+  onConfigChange: (config: SkinShaderConfig) => void
+}
